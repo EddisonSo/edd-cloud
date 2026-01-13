@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: gfs-chunkserver
+  labels:
+    app: gfs-chunkserver
+spec:
+  selector:
+    matchLabels:
+      app: gfs-chunkserver
+  template:
+    metadata:
+      labels:
+        app: gfs-chunkserver
+    spec:
+      # Host networking (same as docker-compose network_mode: host)
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+
+      # Only run on chunkserver nodes
+      nodeSelector:
+        role: chunkserver
+
+      containers:
+        - name: chunkserver
+          image: eddisonso/gfs-chunkserver:latest
+          imagePullPolicy: Always
+
+          # Explicit command (no ENTRYPOINT in image)
+          command: ["./chunkserver"]
+          args:
+            - "-p"
+            - "8080"
+            - "-r"
+            - "8081"
+            - "-h"
+            - "$(NODE_IP)"
+            - "-d"
+            - "/data/chunk"
+            - "-id"
+            - "$(NODE_NAME)"
+            - "-master"
+            - "gfs-master:9000"
+
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+
+          ports:
+            - name: client
+              containerPort: 8080
+            - name: repl
+              containerPort: 8081
+
+          volumeMounts:
+            - name: chunk-data
+              mountPath: /data/chunk
+
+      volumes:
+        - name: chunk-data
+          hostPath:
+            path: /data/gfs/chunkserver
+            type: DirectoryOrCreate
+
