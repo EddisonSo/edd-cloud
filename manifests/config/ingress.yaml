@@ -21,6 +21,27 @@ spec:
                 name: simple-file-share-backend
                 port:
                   number: 80
+          - path: /storage
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-file-share-backend
+                port:
+                  number: 80
+          - path: /cluster-info
+            pathType: Prefix
+            backend:
+              service:
+                name: cluster-monitor
+                port:
+                  number: 80
+          - path: /ws
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-file-share-backend
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
