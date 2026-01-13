@@ -6,3 +6,6 @@
 	path = edd-cloud-interface
 	url = git@github.com:EddisonSo/edd-cloud-interface.git
 	branch = main
+[submodule "cluster-monitor"]
+	path = cluster-monitor
+	url = git@github.com:EddisonSo/cluster-monitor.git
