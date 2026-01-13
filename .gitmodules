@@ -1,0 +1,6 @@
+[submodule "go-gfs"]
+	path = go-gfs
+	url = git@github.com:EddisonSo/go-gfs.git
+[submodule "edd-cloud-interface"]
+	path = edd-cloud-interface
+	url = git@github.com:EddisonSo/edd-cloud-interface.git
