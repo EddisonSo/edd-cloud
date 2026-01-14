@@ -36,6 +36,8 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: rp1
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: backend
           image: eddisonso/ecloud-sfs-backend:v2
@@ -106,6 +108,8 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: rp1
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: frontend
           image: eddisonso/ecloud-sfs-frontend:latest

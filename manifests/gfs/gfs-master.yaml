@@ -30,6 +30,8 @@ spec:
     spec:
       nodeSelector:
         role: master
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: master
           image: eddisonso/gfs-master:latest

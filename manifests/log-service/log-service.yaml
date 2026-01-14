@@ -14,6 +14,8 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: rp1
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: log-service
           image: eddisonso/log-service:latest

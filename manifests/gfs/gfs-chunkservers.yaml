@@ -21,6 +21,9 @@ spec:
       nodeSelector:
         role: chunkserver
 
+      imagePullSecrets:
+        - name: regcred
+
       containers:
         - name: chunkserver
           image: eddisonso/gfs-chunkserver:latest

@@ -45,6 +45,8 @@ spec:
       serviceAccountName: cluster-monitor
       nodeSelector:
         kubernetes.io/hostname: rp1
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: cluster-monitor
           image: eddisonso/cluster-monitor:latest
