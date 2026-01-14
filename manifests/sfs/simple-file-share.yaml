@@ -52,6 +52,13 @@ spec:
             - /app/frontend
             - -log-service
             - log-service:50051
+            - -log-source
+            - $(POD_NAME)
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           envFrom:
             - secretRef:
                 name: simple-file-share-auth

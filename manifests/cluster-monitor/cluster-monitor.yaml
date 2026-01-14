@@ -51,6 +51,13 @@ spec:
           args:
             - "-log-service"
             - "log-service:50051"
+            - "-log-source"
+            - "$(POD_NAME)"
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           ports:
             - containerPort: 8080
               name: http
