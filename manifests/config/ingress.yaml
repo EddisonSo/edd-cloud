@@ -35,6 +35,20 @@ spec:
                 name: cluster-monitor
                 port:
                   number: 80
+          - path: /ws/cluster-info
+            pathType: Prefix
+            backend:
+              service:
+                name: cluster-monitor
+                port:
+                  number: 80
+          - path: /ws/logs
+            pathType: Prefix
+            backend:
+              service:
+                name: log-service
+                port:
+                  number: 80
           - path: /ws
             pathType: Prefix
             backend:

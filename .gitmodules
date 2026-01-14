@@ -9,3 +9,6 @@
 [submodule "cluster-monitor"]
 	path = cluster-monitor
 	url = git@github.com:EddisonSo/cluster-monitor.git
+[submodule "log-service"]
+	path = log-service
+	url = git@github.com:EddisonSo/log-service.git
