@@ -1,2 +1,4 @@
 go-gfs/
 edd-cloud-interface/
+manifests/gfs-ci.kubeconfig
+CLAUDE.md
