@@ -50,6 +50,8 @@ spec:
             - /data/auth.db
             - -static
             - /app/frontend
+            - -log-service
+            - log-service:50051
           envFrom:
             - secretRef:
                 name: simple-file-share-auth

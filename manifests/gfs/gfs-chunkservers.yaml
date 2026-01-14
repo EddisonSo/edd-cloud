@@ -38,7 +38,7 @@ spec:
             - "-d"
             - "/data/chunk"
             - "-id"
-            - "$(NODE_NAME)"
+            - "chunkserver-$(NODE_NAME)"
             - "-master"
             - "gfs-master:9000"
             - "-log-service"
