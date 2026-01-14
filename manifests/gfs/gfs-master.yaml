@@ -40,6 +40,8 @@ spec:
             - "9000"
             - "-data"
             - "/data/master"
+            - "-log-service"
+            - "log-service:50051"
           ports:
             - containerPort: 9000
           volumeMounts:

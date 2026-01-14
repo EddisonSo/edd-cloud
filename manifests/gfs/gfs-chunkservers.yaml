@@ -41,6 +41,8 @@ spec:
             - "$(NODE_NAME)"
             - "-master"
             - "gfs-master:9000"
+            - "-log-service"
+            - "log-service:50051"
 
           env:
             - name: NODE_NAME
