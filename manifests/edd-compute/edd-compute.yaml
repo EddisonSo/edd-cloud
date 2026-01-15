@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edd-compute-data
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edd-compute
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edd-compute
+  template:
+    metadata:
+      labels:
+        app: edd-compute
+    spec:
+      serviceAccountName: edd-compute
+      nodeSelector:
+        kubernetes.io/hostname: rp1
+      containers:
+        - name: edd-compute
+          image: eddisonso/edd-compute:latest
+          args:
+            - -addr
+            - :8080
+            - -db
+            - /data/compute.db
+            - -log-service
+            - log-service:50051
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: edd-compute-data
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edd-compute
+  namespace: default
+spec:
+  selector:
+    app: edd-compute
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http

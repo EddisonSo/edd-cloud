@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: edd-compute
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: compute-spawner
+rules:
+  - apiGroups: [""]
+    resources: [namespaces]
+    verbs: [create, delete, get, list]
+  - apiGroups: [""]
+    resources: [pods, services, secrets, persistentvolumeclaims]
+    verbs: [create, delete, get, list, watch]
+  - apiGroups: [networking.k8s.io]
+    resources: [networkpolicies]
+    verbs: [create, delete, get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: edd-compute-spawner
+subjects:
+  - kind: ServiceAccount
+    name: edd-compute
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: compute-spawner
+  apiGroup: rbac.authorization.k8s.io
+---
+# CI/CD access to rollout edd-compute
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: edd-compute-ci-rollout
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: gfs-ci
+    namespace: cicd
+roleRef:
+  kind: Role
+  name: gfs-rollout
+  apiGroup: rbac.authorization.k8s.io

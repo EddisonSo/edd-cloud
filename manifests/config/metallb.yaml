@@ -1,0 +1,17 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: compute-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.3.150-192.168.3.199
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: compute-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - compute-pool
