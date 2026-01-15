@@ -42,6 +42,9 @@ subjects:
   - kind: ServiceAccount
     name: gfs-ci
     namespace: cicd
+  - kind: ServiceAccount
+    name: edd-cloud
+    namespace: cicd
 roleRef:
   kind: Role
   name: gfs-rollout
