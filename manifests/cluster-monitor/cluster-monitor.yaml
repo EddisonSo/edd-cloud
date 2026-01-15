@@ -49,7 +49,7 @@ spec:
         - name: regcred
       containers:
         - name: cluster-monitor
-          image: eddisonso/cluster-monitor:latest
+          image: eddisonso/ecloud-health:latest
           args:
             - "-log-service"
             - "log-service:50051"

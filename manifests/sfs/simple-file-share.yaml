@@ -40,7 +40,7 @@ spec:
         - name: regcred
       containers:
         - name: backend
-          image: eddisonso/ecloud-sfs-backend:v2
+          image: eddisonso/ecloud-sfs:latest
           imagePullPolicy: Always
           command: ["/app/sfs"]
           args:
@@ -112,7 +112,7 @@ spec:
         - name: regcred
       containers:
         - name: frontend
-          image: eddisonso/ecloud-sfs-frontend:latest
+          image: eddisonso/ecloud-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80

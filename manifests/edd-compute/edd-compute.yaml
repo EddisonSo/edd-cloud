@@ -31,7 +31,7 @@ spec:
         kubernetes.io/hostname: rp1
       containers:
         - name: edd-compute
-          image: eddisonso/edd-compute:latest
+          image: eddisonso/ecloud-compute:latest
           args:
             - -addr
             - :8080
