@@ -12,3 +12,6 @@
 [submodule "log-service"]
 	path = log-service
 	url = git@github.com:EddisonSo/log-service.git
+[submodule "edd-gateway"]
+	path = edd-gateway
+	url = git@github.com:EddisonSo/edd-gateway.git
