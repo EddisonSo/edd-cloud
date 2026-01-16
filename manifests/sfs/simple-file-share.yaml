@@ -7,17 +7,6 @@ stringData:
   SFS_DEFAULT_USERNAME: eddisonso@gmail.com
   SFS_DEFAULT_PASSWORD: pizzaeatter
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: simple-file-share-authdb
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,8 +37,6 @@ spec:
             - 0.0.0.0:8080
             - -master
             - gfs-master:9000
-            - -auth-db
-            - /data/auth.db
             - -static
             - /app/frontend
             - -log-service
@@ -61,19 +48,19 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DATABASE_URL
+            - name: ADMIN_USERNAME
+              value: "eddisonso@gmail.com"
           envFrom:
             - secretRef:
                 name: simple-file-share-auth
           ports:
             - containerPort: 8080
               name: http
-          volumeMounts:
-            - name: authdb
-              mountPath: /data
-      volumes:
-        - name: authdb
-          persistentVolumeClaim:
-            claimName: simple-file-share-authdb
 ---
 apiVersion: v1
 kind: Service
