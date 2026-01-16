@@ -28,6 +28,13 @@ spec:
                 name: simple-file-share-backend
                 port:
                   number: 80
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-file-share-backend
+                port:
+                  number: 80
           - path: /cluster-info
             pathType: Prefix
             backend:
