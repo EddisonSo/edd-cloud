@@ -54,7 +54,10 @@ spec:
                   name: postgres-credentials
                   key: DATABASE_URL
             - name: ADMIN_USERNAME
-              value: "eddisonso@gmail.com"
+              valueFrom:
+                configMapKeyRef:
+                  name: edd-cloud-config
+                  key: ADMIN_USERNAME
           envFrom:
             - secretRef:
                 name: simple-file-share-auth
