@@ -52,7 +52,7 @@ spec:
                   key: ADMIN_USERNAME
           envFrom:
             - secretRef:
-                name: simple-file-share-auth
+                name: edd-cloud-auth
           ports:
             - containerPort: 8080
               name: http
