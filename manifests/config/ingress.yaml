@@ -28,6 +28,13 @@ spec:
                 name: cluster-monitor
                 port:
                   number: 80
+          - path: /pod-metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: cluster-monitor
+                port:
+                  number: 80
           - path: /ws/cluster-info
             pathType: Prefix
             backend:
