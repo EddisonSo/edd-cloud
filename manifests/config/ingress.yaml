@@ -1,12 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: simple-file-share
+  name: simple-file-share-api
+  annotations:
+    traefik.ingress.kubernetes.io/router.priority: "100"
 spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - eddisonso.com
         - cloud.eddisonso.com
         - cloud-api.eddisonso.com
       secretName: eddisonso-wildcard-tls
@@ -70,13 +71,6 @@ spec:
                 name: simple-file-share-backend
                 port:
                   number: 80
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: simple-file-share-frontend
-                port:
-                  number: 80
     - host: cloud-api.eddisonso.com
       http:
         paths:
@@ -85,5 +79,30 @@ spec:
             backend:
               service:
                 name: simple-file-share-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simple-file-share-frontend
+  annotations:
+    traefik.ingress.kubernetes.io/router.priority: "1"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - eddisonso.com
+        - cloud.eddisonso.com
+      secretName: eddisonso-wildcard-tls
+  rules:
+    - host: cloud.eddisonso.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-file-share-frontend
                 port:
                   number: 80
