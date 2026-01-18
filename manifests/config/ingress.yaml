@@ -1,18 +1,7 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: large-upload
-spec:
-  buffering:
-    maxRequestBodyBytes: 0
-    memRequestBodyBytes: 0
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: simple-file-share
-  annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: default-large-upload@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
@@ -40,6 +29,13 @@ spec:
                 port:
                   number: 80
           - path: /pod-metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: cluster-monitor
+                port:
+                  number: 80
+          - path: /ws/pod-metrics
             pathType: Prefix
             backend:
               service:
