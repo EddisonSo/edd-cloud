@@ -15,7 +15,6 @@ spec:
         app: simple-file-share
         tier: backend
     spec:
-      serviceAccountName: cluster-manager-client
       nodeSelector:
         kubernetes.io/hostname: rp1
       imagePullSecrets:
@@ -51,11 +50,6 @@ spec:
                 configMapKeyRef:
                   name: edd-cloud-config
                   key: ADMIN_USERNAME
-            - name: CLUSTER_MANAGER_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: cluster-manager-secret
-                  key: secret
           envFrom:
             - secretRef:
                 name: edd-cloud-auth
