@@ -15,6 +15,7 @@ spec:
         app: simple-file-share
         tier: backend
     spec:
+      serviceAccountName: cluster-manager-client
       nodeSelector:
         kubernetes.io/hostname: rp1
       imagePullSecrets:

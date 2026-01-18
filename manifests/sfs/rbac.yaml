@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cluster-manager-client
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-manager-node-reader
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["list", "get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-manager-node-reader
+subjects:
+  - kind: ServiceAccount
+    name: cluster-manager-client
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-manager-node-reader
+  apiGroup: rbac.authorization.k8s.io
