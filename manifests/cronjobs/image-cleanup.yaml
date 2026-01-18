@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: image-cleanup
+spec:
+  schedule: "0 3 * * *"  # Daily at 3 AM
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostPID: true
+          tolerations:
+            - operator: Exists  # Run on any node including control-plane
+          containers:
+            - name: cleanup
+              image: docker.io/rancher/mirrored-library-busybox:1.36.1
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  echo "Pruning unused images on $(hostname)..."
+                  chroot /host crictl -r unix:///run/k3s/containerd/containerd.sock rmi --prune || true
+                  echo "Done"
+              securityContext:
+                privileged: true
+              volumeMounts:
+                - name: host
+                  mountPath: /host
+          restartPolicy: OnFailure
+          volumes:
+            - name: host
+              hostPath:
+                path: /
+                type: Directory
