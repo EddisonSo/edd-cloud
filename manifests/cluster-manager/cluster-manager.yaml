@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cluster-manager
+  labels:
+    app: cluster-manager
+spec:
+  selector:
+    matchLabels:
+      app: cluster-manager
+  template:
+    metadata:
+      labels:
+        app: cluster-manager
+    spec:
+      hostPID: true
+      hostNetwork: true
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+        - name: cluster-manager
+          image: eddisonso/cluster-manager:latest
+          args:
+            - "-addr=:9090"
+            - "-data-dir=/var/lib/cluster-manager"
+            - "-host-root=/host"
+          ports:
+            - containerPort: 9090
+              hostPort: 9090
+              protocol: TCP
+          env:
+            - name: CLUSTER_MANAGER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-manager-secret
+                  key: secret
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: host-root
+              mountPath: /host
+            - name: data-dir
+              mountPath: /var/lib/cluster-manager
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - name: host-root
+          hostPath:
+            path: /
+            type: Directory
+        - name: data-dir
+          hostPath:
+            path: /var/lib/cluster-manager
+            type: DirectoryOrCreate

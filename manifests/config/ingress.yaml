@@ -49,6 +49,20 @@ spec:
                 name: log-service
                 port:
                   number: 80
+          - path: /cluster-manager
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-file-share-backend
+                port:
+                  number: 80
+          - path: /api/verify-password
+            pathType: Exact
+            backend:
+              service:
+                name: simple-file-share-backend
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
